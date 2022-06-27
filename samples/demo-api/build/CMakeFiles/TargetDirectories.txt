@@ -1,3 +1,0 @@
-D:/STD/PRO_SDK/sdk0602/xvsdk/samples/demo-api/build/CMakeFiles/demo-api.dir
-D:/STD/PRO_SDK/sdk0602/xvsdk/samples/demo-api/build/CMakeFiles/ALL_BUILD.dir
-D:/STD/PRO_SDK/sdk0602/xvsdk/samples/demo-api/build/CMakeFiles/ZERO_CHECK.dir
