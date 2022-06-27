@@ -1,0 +1,13 @@
+ 2022-05-24 13:55:10  average : 0.402638  min : 0  max : 0.576003  median  : 0.458759 max min diff value  :0.576003 pass per 0.84
+ 2022-05-24 13:55:12  average : 0.507636  min : 0.485552  max : 0.515275  median  : 0.509727 max min diff value  :0.0297233 pass per 1
+ 2022-05-24 13:55:13  average : 0.511201  min : 0.506405  max : 0.515275  median  : 0.510829 max min diff value  :0.00886971 pass per 1
+ 2022-05-24 13:55:14  average : 0.511146  min : 0.506646  max : 0.514818  median  : 0.511039 max min diff value  :0.00817209 pass per 1
+ 2022-05-24 13:55:15  average : 0.510877  min : 0.505098  max : 0.515836  median  : 0.510156 max min diff value  :0.0107377 pass per 1
+ 2022-05-24 13:55:16  average : 0.511923  min : 0.50744  max : 0.517239  median  : 0.511712 max min diff value  :0.00979912 pass per 1
+ 2022-05-24 13:55:17  average : 0.512964  min : 0.508451  max : 0.517734  median  : 0.512448 max min diff value  :0.00928313 pass per 1
+ 2022-05-24 13:55:18  average : 0.513272  min : 0.505504  max : 0.518774  median  : 0.512966 max min diff value  :0.01327 pass per 1
+ 2022-05-24 13:55:20  average : 0.512685  min : 0.507691  max : 0.51671  median  : 0.513689 max min diff value  :0.00901836 pass per 1
+ 2022-05-24 13:55:21  average : 0.513281  min : 0.509983  max : 0.517556  median  : 0.513292 max min diff value  :0.00757271 pass per 1
+ 2022-05-24 13:55:22  average : 0.50731  min : 0.489421  max : 0.517675  median  : 0.509968 max min diff value  :0.0282542 pass per 1
+ 2022-05-24 13:55:23  average : 0.494855  min : 0.473141  max : 0.50793  median  : 0.496328 max min diff value  :0.0347886 pass per 1
+ 2022-05-24 13:55:24  average : 0.499253  min : 0.480737  max : 0.512744  median  : 0.498929 max min diff value  :0.0320067 pass per 1

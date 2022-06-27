@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\STD\PRO_SDK\sdk0602\xvsdk\samples\all_stream\all_stream.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\STD\PRO_SDK\sdk0602\xvsdk\samples\all_stream\raw2opencv.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\STD\PRO_SDK\sdk0602\xvsdk\samples\all_stream\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{929CB789-EE9B-3C8F-8AA5-F0D271DE8089}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

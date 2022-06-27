@@ -1,0 +1,11 @@
+﻿  DisplayTOF.cpp
+d:\std\pro_sdk\sdk0602\xvsdk\samples\all_stream\displaytof\displaytof.cpp(40): warning C4305: “初始化”: 从“double”到“float”截断
+d:\std\pro_sdk\sdk0602\xvsdk\samples\all_stream\displaytof\displaytof.cpp(46): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\std\pro_sdk\sdk0602\xvsdk\samples\all_stream\displaytof\displaytof.cpp(54): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\std\pro_sdk\sdk0602\xvsdk\samples\all_stream\displaytof\displaytof.cpp(59): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\std\pro_sdk\sdk0602\xvsdk\samples\all_stream\displaytof\displaytof.cpp(74): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\std\pro_sdk\sdk0602\xvsdk\samples\all_stream\displaytof\displaytof.cpp(78): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\std\pro_sdk\sdk0602\xvsdk\samples\all_stream\displaytof\displaytof.cpp(87): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\std\pro_sdk\sdk0602\xvsdk\samples\all_stream\displaytof\displaytof.cpp(172): warning C4805: “&=”: 在操作中将类型“int”与类型“bool”混合不安全
+LINK : warning LNK4044: 无法识别的选项“/pthread”；已忽略
+  DisplayTOF.vcxproj -> D:\STD\PRO_SDK\sdk0602\xvsdk\samples\all_stream\build\Release\DisplayTOF.exe

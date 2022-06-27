@@ -1,0 +1,12 @@
+﻿  DistanceTOF.cpp
+d:\std\pro_sdk\sdk0602\xvsdk\samples\all_stream\distancetof\distancetof.cpp(31): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\std\pro_sdk\sdk0602\xvsdk\samples\all_stream\distancetof\distancetof.cpp(39): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\std\pro_sdk\sdk0602\xvsdk\samples\all_stream\distancetof\distancetof.cpp(44): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\std\pro_sdk\sdk0602\xvsdk\samples\all_stream\distancetof\distancetof.cpp(59): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\std\pro_sdk\sdk0602\xvsdk\samples\all_stream\distancetof\distancetof.cpp(108): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+d:\std\pro_sdk\sdk0602\xvsdk\samples\all_stream\distancetof\distancetof.cpp(109): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+d:\std\pro_sdk\sdk0602\xvsdk\samples\all_stream\distancetof\distancetof.cpp(170): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+d:\std\pro_sdk\sdk0602\xvsdk\samples\all_stream\distancetof\distancetof.cpp(176): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+d:\std\pro_sdk\sdk0602\xvsdk\samples\all_stream\distancetof\distancetof.cpp(201): warning C4805: “&=”: 在操作中将类型“int”与类型“bool”混合不安全
+LINK : warning LNK4044: 无法识别的选项“/pthread”；已忽略
+  DistanceTOF.vcxproj -> D:\STD\PRO_SDK\sdk0602\xvsdk\samples\all_stream\build\Release\DistanceTOF.exe
