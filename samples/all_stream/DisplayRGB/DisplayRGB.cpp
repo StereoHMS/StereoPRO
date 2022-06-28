@@ -98,39 +98,6 @@ int main(int argc, char* argv[]) try
 	xv::setLogLevel(xv::LogLevel::debug);
 
 	std::string json = "";
-	if (argc > 1 && *argv[1] != '\0') {
-		std::ifstream ifs(argv[1]);
-		if (!ifs.is_open()) {
-			std::cerr << "Failed to open: " << argv[1] << std::endl;
-		}
-		else
-		{
-			std::stringstream fbuf;
-			fbuf << ifs.rdbuf();
-			json = fbuf.str();
-		}
-	}
-
-	if (argc == 3)
-	{
-		std::string enableDevStr(argv[2]);
-		enableDevStr += " ";
-		int index, index2;
-		while (true)
-		{
-			index = enableDevStr.find(' ');
-			if (index == std::string::npos)
-			{
-				break;
-			}
-			auto one = enableDevStr.substr(0, index);
-			index2 = one.find(':');
-			auto key = one.substr(0, index2);
-			auto value = one.substr(index2 + 1, one.size() - index2 - 1) == "1" ? true : false;
-			enableDevStr = enableDevStr.substr(index + 1);
-			std::cout << key << " : " << value << std::endl;
-		}
-	}
 
 	auto devices = xv::getDevices(10., json);
 
@@ -159,21 +126,6 @@ int main(int argc, char* argv[]) try
 	std::cout << "        Stop        " << std::endl;
 	std::cout << " ################## " << std::endl;
 
-#ifdef USE_EX
-	if (std::dynamic_pointer_cast<xv::DeviceEx>(device)->slam2())
-		std::dynamic_pointer_cast<xv::DeviceEx>(device)->slam2()->stop();
-#endif
-
-	if (device->slam())
-		device->slam()->stop();
-
-
-#ifdef USE_OPENCV
-	s_stop = true;
-	if (t.joinable()) {
-		t.join();
-	}
-#endif
 	return EXIT_SUCCESS;
 }
 catch (const std::exception &e) {

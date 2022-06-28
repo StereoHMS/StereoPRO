@@ -18,7 +18,6 @@
 
 #define USE_EX
 
-bool s_stop = false;
 static std::map<std::string, int> enableDevMap;
 
 
@@ -163,7 +162,7 @@ void display() {
 	}
 	cv::waitKey(1);
 
-	while (!s_stop) {
+	while (true) {
 		std::shared_ptr<const xv::ColorImage> rgb = nullptr;
 		std::shared_ptr<const xv::DepthImage> tof = nullptr;
 		std::shared_ptr<const xv::GrayScaleImage> ir = nullptr;
@@ -228,7 +227,6 @@ int main(int argc, char* argv[]) try
 	enableDevMap["rgb"] = true;
 	enableDevMap["tof"] = true;
 	enableDevMap["tof_mode"] = 3;//default lablize sf
-	enableDevMap["tof_point_cloud"] = false;
 
 	auto devices = xv::getDevices(10., json);
 
@@ -333,7 +331,6 @@ int main(int argc, char* argv[]) try
 	std::cerr << "ENTER to stop" << std::endl;
 	std::cin.get();
 
-	s_stop = true;
 
 	std::cout << " ################## " << std::endl;
 	std::cout << "        Stop        " << std::endl;

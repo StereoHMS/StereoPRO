@@ -19,9 +19,6 @@
 #define USE_EX
 using namespace std;
 
-
-
-bool s_stop = false;
 static std::map<std::string, int> enableDevMap;
 
 cv::Mat raw_to_opencv_tof(std::shared_ptr<const xv::DepthImage> tof)
@@ -89,7 +86,7 @@ std::string timeShowStr(double hostTimestamp) {
 	return std::string(s);
 }
 void display() {
-	while (!s_stop) {
+	while (true) {
 		std::shared_ptr<const xv::DepthImage> tof = nullptr;
 
 		if (enableDevMap["tof"]) {
@@ -144,44 +141,10 @@ int main(int argc, char* argv[]) try
 	xv::setLogLevel(xv::LogLevel::debug);
 
 	std::string json = "";
-	if (argc > 1 && *argv[1] != '\0') {
-		std::ifstream ifs(argv[1]);
-		if (!ifs.is_open()) {
-			std::cerr << "Failed to open: " << argv[1] << std::endl;
-		}
-		else
-		{
-			std::stringstream fbuf;
-			fbuf << ifs.rdbuf();
-			json = fbuf.str();
-		}
-	}
 
-	if (argc == 3)
-	{
-		std::string enableDevStr(argv[2]);
-		enableDevStr += " ";
-		int index, index2;
-		while (true)
-		{
-			index = enableDevStr.find(' ');
-			if (index == std::string::npos)
-			{
-				break;
-			}
-			auto one = enableDevStr.substr(0, index);
-			index2 = one.find(':');
-			auto key = one.substr(0, index2);
-			auto value = one.substr(index2 + 1, one.size() - index2 - 1) == "1" ? true : false;
-			enableDevStr = enableDevStr.substr(index + 1);
-			std::cout << key << " : " << value << std::endl;
-			enableDevMap[key] = value;
-		}
-	}
 	enableDevMap["tof"] = true;
 	enableDevMap["tof_mode"] = 3;
 	auto devices = xv::getDevices(10., json);
-
 
 	std::ofstream ofs;
 	if (devices.empty())
@@ -220,8 +183,6 @@ int main(int argc, char* argv[]) try
 	}
 
 
-	//Display in thread to not slow down callbacks
-
 
 	if (enableDevMap["tof"]) {
 		device->tofCamera()->registerCallback([](xv::DepthImage const & tof) {
@@ -232,9 +193,6 @@ int main(int argc, char* argv[]) try
 		});
 	}
 
-
-
-	s_stop = false;
 	std::thread t(display);
 
 
@@ -246,7 +204,6 @@ int main(int argc, char* argv[]) try
 	std::cerr << "ENTER to stop" << std::endl;
 	std::cin.get();
 
-	s_stop = true;
 
 	std::cout << " ################## " << std::endl;
 	std::cout << "        Stop        " << std::endl;

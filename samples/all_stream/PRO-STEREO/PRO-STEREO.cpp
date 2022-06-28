@@ -16,8 +16,6 @@
 
 #define USE_EX
 
-
-bool s_stop = false;
 static std::map<std::string, int> enableDevMap;
 
 
@@ -27,8 +25,6 @@ static std::map<std::string, int> enableDevMap;
 #ifdef USE_PRIVATE
 #include "xv-sdk-private.h"
 #endif
-
-
 #include <opencv2/opencv.hpp>
 
 
@@ -80,10 +76,6 @@ std::pair<cv::Mat, cv::Mat> raw_to_opencv(std::shared_ptr<const xv::FisheyeImage
 		}
 	}
 
-	/*if (tags) {
-		add_tags(left, *tags);
-	}*/
-
 	return { left, right };
 }
 
@@ -131,62 +123,18 @@ std::array<cv::Mat, 4> raw_to_opencv(std::shared_ptr<const xv::FisheyeImages> st
 	return images;
 }
 
-std::pair<cv::Mat, cv::Mat> raw_to_opencv(std::shared_ptr<const xv::EyetrackingImage> eyetracking)
-{
-	cv::Mat left;
-	cv::Mat right;
-
-	if (eyetracking) {
-		auto const& leftInput = eyetracking->images[0];
-		auto const& rightInput = eyetracking->images[1];
-		if (leftInput.data != nullptr) {
-			left = cv::Mat::zeros(leftInput.height, leftInput.width, CV_8UC1);
-			std::memcpy(left.data, leftInput.data.get(), static_cast<size_t>(left.rows*left.cols));
-		}
-		if (rightInput.data != nullptr) {
-			right = cv::Mat::zeros(rightInput.height, rightInput.width, CV_8UC1);
-			std::memcpy(right.data, rightInput.data.get(), static_cast<size_t>(right.rows*right.cols));
-		}
-	}
-	else {
-		left = cv::Mat::zeros(400, 640, CV_8UC1);
-		right = cv::Mat::zeros(400, 640, CV_8UC1);
-	}
-
-	cv::cvtColor(left, left, cv::COLOR_GRAY2BGR);
-	cv::cvtColor(right, right, cv::COLOR_GRAY2BGR);
-
-	return { left, right };
-}
-
 #endif
 
 
-std::shared_ptr<const xv::ColorImage> s_rgb = nullptr;
-std::shared_ptr<const xv::DepthImage> s_tof = nullptr;
-std::shared_ptr<const xv::GrayScaleImage> s_ir = nullptr;
 std::shared_ptr<const xv::FisheyeImages> s_stereo = nullptr;
-std::shared_ptr<const xv::DepthColorImage> s_depthColor = nullptr;
-std::shared_ptr<const xv::SgbmImage> s_ptr_sgbm = nullptr;
-std::shared_ptr<const xv::EyetrackingImage> s_eyetracking = nullptr;
 
 #ifdef USE_EX
 std::shared_ptr<const xv::FisheyeKeyPoints<2, 32>> s_keypoints = nullptr;
 std::shared_ptr<const xv::FisheyeKeyPoints<4, 32>> s_keypoints4cam = nullptr;
 std::mutex s_mtx_tags;
-std::shared_ptr<const std::vector<std::pair<int, std::array<xv::Vector2d, 4>>>> s_tags;
-std::mutex s_mtx_rgb_tags;
-xv::GrayScaleImage s_rgb_gray;
-std::vector<xv::TagDetection> s_rgb_tags;
 #endif
 
-std::mutex s_mtx_rgb;
-std::mutex s_mtx_tof;
-std::mutex s_mtx_depthColor;
-std::mutex s_mtx_ir;
 std::mutex s_mtx_stereo;
-std::mutex s_mtx_sgbm;
-std::mutex s_mtx_eyetracking;
 
 void display() {
 	if (enableDevMap["fisheye"]) {
@@ -198,13 +146,12 @@ void display() {
 
 	cv::waitKey(1);
 
-	while (!s_stop) {
+	while (true) {
 		std::shared_ptr<const xv::FisheyeImages> stereo = nullptr;
 #ifdef USE_EX
 		std::shared_ptr<const xv::FisheyeKeyPoints<2, 32>> keypoints = nullptr;
 		std::shared_ptr<const xv::FisheyeKeyPoints<4, 32>> keypoints4cam = nullptr;
 		std::shared_ptr<const std::vector<std::pair<int, std::array<xv::Vector2d, 4>>>> tags;
-		decltype (s_rgb_tags) rgb_tags;
 #endif
 		if (enableDevMap["fisheye"]) {
 			s_mtx_stereo.lock();
@@ -213,11 +160,7 @@ void display() {
 			keypoints = s_keypoints;
 			keypoints4cam = s_keypoints4cam;
 			s_mtx_tags.lock();
-			tags = s_tags;
 			s_mtx_tags.unlock();
-			s_mtx_rgb_tags.lock();
-			rgb_tags = s_rgb_tags;
-			s_mtx_rgb_tags.unlock();
 #endif
 			s_mtx_stereo.unlock();
 
@@ -227,12 +170,7 @@ void display() {
 				cv::imshow("Left", imgs.first);
 				cv::imshow("Right", imgs.second);
 			}
-			/*if (keypoints4cam) {
-				auto imgs = raw_to_opencv(stereo, keypoints4cam, tags);
-				for (std::size_t i = 0; i < imgs.size(); ++i) {
-					cv::imshow("Cam" + std::to_string(i), imgs[i]);
-				}
-			}*/
+	
 #else
 			if (stereo) {
 				auto imgs = raw_to_opencv(stereo);
@@ -271,51 +209,12 @@ int main(int argc, char* argv[]) try
 	xv::setLogLevel(xv::LogLevel::debug);
 
 	std::string json = "";
-	if (argc > 1 && *argv[1] != '\0') {
-		std::ifstream ifs(argv[1]);
-		if (!ifs.is_open()) {
-			std::cerr << "Failed to open: " << argv[1] << std::endl;
-		}
-		else
-		{
-			std::stringstream fbuf;
-			fbuf << ifs.rdbuf();
-			json = fbuf.str();
-		}
-	}
 	enableDevMap["fisheye"] = true;
 	enableDevMap["slam"] = true;
 	enableDevMap["imu"] = true;
-	enableDevMap["eyetracking"] = true;
-	enableDevMap["sync"] = false;
-	enableDevMap["dewarp"] = true;
-	enableDevMap["VGA"] = true;
-	enableDevMap["720P"] = false;
-	if (argc == 3)
-	{
-		std::string enableDevStr(argv[2]);
-		enableDevStr += " ";
-		int index, index2;
-		while (true)
-		{
-			index = enableDevStr.find(' ');
-			if (index == std::string::npos)
-			{
-				break;
-			}
-			auto one = enableDevStr.substr(0, index);
-			index2 = one.find(':');
-			auto key = one.substr(0, index2);
-			auto value = one.substr(index2 + 1, one.size() - index2 - 1) == "1" ? true : false;
-			enableDevStr = enableDevStr.substr(index + 1);
-			std::cout << key << " : " << value << std::endl;
-			enableDevMap[key] = value;
-		}
-	}
 
 	auto devices = xv::getDevices(10., json);
 
-	std::ofstream ofs;
 	if (devices.empty())
 	{
 		std::cout << "Timeout: no device found\n";
@@ -329,7 +228,6 @@ int main(int argc, char* argv[]) try
 	enableDevMap["imu"] &= device->imuSensor() != nullptr;
 
 
-	std::string tagDetectorId;
 	if (enableDevMap["fisheye"]) {
 #ifdef USE_EX
 		std::dynamic_pointer_cast<xv::FisheyeCamerasEx>(device->fisheyeCameras())->registerKeyPointsCallback([](const xv::FisheyeKeyPoints<2, 32>& keypoints) {
@@ -349,22 +247,11 @@ int main(int argc, char* argv[]) try
 				std::cout << "stereo   " << timeShowStr(stereo.edgeTimestampUs, stereo.hostTimestamp) << stereo.images[0].width << "x" << stereo.images[0].height << "@" << std::round(fc.fps()) << "fps" << std::endl;
 			}
 		});
-#ifdef USE_EX
-		tagDetectorId = std::dynamic_pointer_cast<xv::FisheyeCamerasEx>(device->fisheyeCameras())->startTagDetector(device->slam(), "36h11", 0.0639, 50.);
 
-		if (enableDevMap["VGA"])
-		{
-			std::dynamic_pointer_cast<xv::FisheyeCamerasEx>(device->fisheyeCameras())->setResolutionMode(xv::FisheyeCamerasEx::ResolutionMode::MEDIUM);
-		}
-		if (enableDevMap["720P"])
-		{
-			std::dynamic_pointer_cast<xv::FisheyeCamerasEx>(device->fisheyeCameras())->setResolutionMode(xv::FisheyeCamerasEx::ResolutionMode::HIGH);
-		}
-		// device->fisheyeCameras()->setStereoResolutionMode(xv::ResolutionMode::R_720P);
-		device->fisheyeCameras()->start();
+
 	}
 
-#endif
+
 
 
 #ifdef USE_EX
@@ -382,12 +269,6 @@ int main(int argc, char* argv[]) try
 			s_mtx_stereo.lock();
 			s_stereo = std::make_shared<xv::FisheyeImages>(stereo);
 			s_mtx_stereo.unlock();
-#ifdef USE_EX
-			/*s_mtx_tags.lock();
-			auto tags = std::dynamic_pointer_cast<xv::FisheyeCamerasEx>(device->fisheyeCameras())->detectTags(stereo.images[0], "36h11");
-			s_tags = std::make_shared<std::vector<std::pair<int, std::array<xv::Vector2d, 4>>>>(tags);
-			s_mtx_tags.unlock();*/
-#endif
 		});
 #ifdef USE_EX
 		std::dynamic_pointer_cast<xv::FisheyeCamerasEx>(device->fisheyeCameras())->registerKeyPointsCallback([](const xv::FisheyeKeyPoints<2, 32>& keypoints) {
@@ -404,7 +285,6 @@ int main(int argc, char* argv[]) try
 	}
 
 
-	s_stop = false;
 	std::thread t1(display);
 
 
@@ -414,29 +294,10 @@ int main(int argc, char* argv[]) try
 	std::cout << "        Start       " << std::endl;
 	std::cout << " ################## " << std::endl;
 
-#ifdef USE_EX
-	if (!tagDetectorId.empty()) {
-		std::cerr << "ENTER to stop tag detection" << std::endl;
-		std::cin.get();
-		std::dynamic_pointer_cast<xv::FisheyeCamerasEx>(device->fisheyeCameras())->stopTagDetector(tagDetectorId);
-	}
-
-	std::cerr << "ENTER to switch FE to HIGH res" << std::endl;
-	std::cin.get();
-
-	std::dynamic_pointer_cast<xv::FisheyeCamerasEx>(device->fisheyeCameras())->setResolutionMode(xv::FisheyeCamerasEx::ResolutionMode::HIGH);
-
-	std::cerr << "ENTER to switch FE to MEDIUM res" << std::endl;
-	std::cin.get();
-
-	std::dynamic_pointer_cast<xv::FisheyeCamerasEx>(device->fisheyeCameras())->setResolutionMode(xv::FisheyeCamerasEx::ResolutionMode::MEDIUM);
-
-#endif
 
 	std::cerr << "ENTER to stop" << std::endl;
 	std::cin.get();
 
-	s_stop = true;
 
 	std::cout << " ################## " << std::endl;
 	std::cout << "        Stop        " << std::endl;
@@ -451,13 +312,7 @@ int main(int argc, char* argv[]) try
 		device->slam()->stop();
 
 
-#ifdef USE_OPENCV
-	s_stop = true;
-	if (t.joinable()) {
-		t.join();
-	}
-#endif
-	ofs.close();
+
 	return EXIT_SUCCESS;
 }
 catch (const std::exception &e) {

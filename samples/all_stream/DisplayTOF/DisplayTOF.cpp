@@ -15,29 +15,8 @@
 
 using namespace std;
 #define TOF_WINDOW_NAME "TOF"
-#define USE_EX
-//#define USE_PRIVATE
 
-bool s_stop = false;
 static std::map<std::string, int> enableDevMap;
-
-static struct xv::sgbm_config global_config = {
-	1 ,//enable_dewarp
-	1.0, //dewarp_zoom_factor
-	0, //enable_disparity
-	1, //enable_depth
-	0, //enable_point_cloud
-	0.08, //baseline
-	96, //fov
-	255, //disparity_confidence_threshold
-	{1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0}, //homography
-	1, //enable_gamma
-	2.2, //gamma_value
-	0, //enable_gaussian
-	0, //mode
-	8000, //max_distance
-	100, //min_distance
-};
 
 cv::Mat raw_to_opencv_tof_1(std::shared_ptr<const xv::DepthImage> tof)
 {
@@ -104,14 +83,13 @@ cv::Mat raw_to_opencv_tof_1(std::shared_ptr<const xv::DepthImage> tof)
 
 std::shared_ptr<const xv::DepthImage> s_tof = nullptr;
 
-
 std::mutex s_mtx_tof;
 
 
 void display() {
 
 	cv::waitKey(1);
-	while (!s_stop) {
+	while (true) {
 		std::shared_ptr<const xv::DepthImage> tof = nullptr;
 
 		if (enableDevMap["tof"]) {
@@ -140,20 +118,6 @@ int main(int argc, char* argv[]) try
 	xv::setLogLevel(xv::LogLevel::debug);
 
 	std::string json = "";
-	if (argc > 1 && *argv[1] != '\0') {
-		std::ifstream ifs(argv[1]);
-		if (!ifs.is_open()) {
-			std::cerr << "Failed to open: " << argv[1] << std::endl;
-		}
-		else
-		{
-			std::stringstream fbuf;
-			fbuf << ifs.rdbuf();
-			json = fbuf.str();
-		}
-	}
-
-
 	enableDevMap["tof"] = true;
 	auto devices = xv::getDevices(10., json);
 
@@ -209,44 +173,22 @@ int main(int argc, char* argv[]) try
 	}
 
 
-
-	s_stop = false;
 	std::thread t(display);
-
 
 	std::cout << " ################## " << std::endl;
 	std::cout << "        Start       " << std::endl;
 	std::cout << " ################## " << std::endl;
 
-#ifdef USE_EX
-
-
-	std::cerr << "ENTER to switch FE to HIGH res" << std::endl;
-	std::cin.get();
-
-
-	std::cerr << "ENTER to switch FE to MEDIUM res" << std::endl;
-	std::cin.get();
-
-
-#endif
 
 	std::cerr << "ENTER to stop" << std::endl;
 	std::cin.get();
 
-	s_stop = true;
 
 	std::cout << " ################## " << std::endl;
 	std::cout << "        Stop        " << std::endl;
 	std::cout << " ################## " << std::endl;
 
 
-#ifdef USE_OPENCV
-	s_stop = true;
-	if (t.joinable()) {
-		t.join();
-	}
-#endif
 	return EXIT_SUCCESS;
 }
 catch (const std::exception &e) {
