@@ -180,8 +180,6 @@ void display() {
 #endif
 		}
 
-
-
 		cv::waitKey(1);
 	}
 }
