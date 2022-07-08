@@ -21,7 +21,7 @@ Stereo PRO　開発用のSDKなどは下記のサイトにてご確認いただ�
 
 > **サポート & 問題解決**: 製品サポート(ex.デバイスに関する質問やデバイスに問題がある)が必要な場合、[FAQ]を参照してください。(https://singray-stereo.com/stereo-pro-faq/)
 > FAQで問題が解決されない場合は公式フォーラム [フォーラム](https://singray-stereo.com/forums/forum/stereo-pro-forum/) と [ドキュメント資料](https://singray-stereo.com/category/support/prodocuments/) をチェックしてください。
-上記の方法で質問の答えが見つからない場合、 [問合せフォーム](https://singray-stereo.com/inform/)の記入またはお問合せ *info@singray-stereo.com*を送ってください。
+上記の方法で質問の答えが見つからない場合、 [問合せフォーム](https://singray-stereo.com/inform/)の記入またはお問合せメール *info@singray-stereo.com*を送ってください。
 
 ## SDKの内容:
 | 項目 | 説明 | ダウンロードリンク|
