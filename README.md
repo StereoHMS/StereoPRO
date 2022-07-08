@@ -21,13 +21,13 @@ Stereo PRO　開発用のSDKなどは下記のサイトにてご確認いただ�
 
 > **サポート & 問題解決**: 製品サポート(ex.デバイスに関する質問やデバイスに問題がある)が必要な場合、[FAQ]を参照してください。(https://singray-stereo.com/stereo-pro-faq/)
 > FAQで問題が解決されない場合は公式フォーラム [フォーラム](https://singray-stereo.com/forums/forum/stereo-pro-forum/) と [ドキュメント資料](https://singray-stereo.com/category/support/prodocuments/) をチェックしてください。
-上記の方法で質問の答えが見つからない場合、 [問合せフォーム](https://singray-stereo.com/inform/)の記入またはお問合せ [メール](info@singray-stereo.com)を送ってください。
+上記の方法で質問の答えが見つからない場合、 [問合せフォーム](https://singray-stereo.com/inform/)の記入またはお問合せ *info@singray-stereo.com*を送ってください。
 
 ## SDKの内容:
 | 項目 | 説明 | ダウンロードリンク|
 | ------- | ------- | ------- |
 | **Stereo PRO Viewer** | このアプリケーションで、Stereo PROにアクセスすると、デプスストリームの表示、SLAM/CSLAM、IMU、RGB、RGB-D、カメラ設定の変更、Advanced contorol、デプスの可視化とポスト処理の有効化など、さまざまな機能があります。 | [**Stereo PRO viewer.exe**](https://singray-stereo.com/category/support/prosoftware/) |
-| **[Code Samples](./examples)** |これらのサンプルは、SDKを使用してカメラにアクセスするコードスニペットをアプリケーションに簡単に入れる方法を紹介しています。 [**C++ examples**](./examples) | [**Stereo PRO SDK.exe**](https://singray-stereo.com/category/support/prosoftware/)に含まれています。 |
+| **[Code Samples](./samples/all_stream)** |これらのサンプルは、SDKを使用してカメラにアクセスするコードスニペットをアプリケーションに簡単に入れる方法を紹介しています。 [**C++ examples**](./samples/all_stream) | [**Stereo PRO SDK.exe**](https://singray-stereo.com/category/support/prosoftware/)に含まれています。 |
 | **Wrappers** | Python,C++,Andorid API
 
 
